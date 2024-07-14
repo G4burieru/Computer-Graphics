@@ -26,3 +26,4 @@ void MyGlDraw(void);
 
 void PutPixel(Spot q, Color p);
 void DrawLine(Spot begin, Spot end, Color b, Color e);
+void DrawTriangle(Spot a, Spot b, Spot c, Color ca, Color cb, Color cc);

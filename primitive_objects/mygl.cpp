@@ -12,11 +12,13 @@ void MyGlDraw(void)
     //*************************************************************************
     // Chame aqui as funções do mygl.h
     //*************************************************************************
-    Spot any_f = {0, 0};
-    Spot any_s = {256, 256};
+    Spot any_s = {0, 0};
+    Spot any_f = {256, 256};
     Color white = {255, 255, 255, 255};
+    Color red = {255, 0, 0, 255};
     PutPixel(any_s, white);
-    DrawLine(any_f, any_s, white, white);
+    //DrawLine(any_f, any_s, white, red);
+    DrawTriangle( Spot{0, 0}, Spot{256, 256}, Spot{512, 0}, red, red, red);
 
 }
 
@@ -30,23 +32,52 @@ void PutPixel (Spot q, Color p) {
     FBptr[position+3] = p.a; // componente A
 }
 
-void DrawLine (Spot begin, Spot end, Color b, Color e)
-{
-    int dx = end.x - begin.x;
-    int dy = end.y - begin.y;
-    int x = begin.x;
-    int y = begin.y;
-    int error = 0;
+void DrawLine(Spot begin, Spot end, Color b, Color e) {
+    // Calcula a diferença absoluta entre as coordenadas x dos pontos de início e fim
+    int dx = abs(end.x - begin.x);
+    // Calcula a diferença absoluta entre as coordenadas y dos pontos de início e fim
+    int dy = abs(end.y - begin.y);
 
-    while (x < end.x)
-    {
-        PutPixel(Spot{x, y}, b);
-        x = x + 1;
-        error = error + 2*dy;
+    // Determina a direção do incremento de x: se o ponto de início é menor que o ponto final, incrementa x; caso contrário, decrementa x
+    int sx = (begin.x < end.x) ? 1 : -1;
+    // Determina a direção do incremento de y: se o ponto de início é menor que o ponto final, incrementa y; caso contrário, decrementa y
+    int sy = (begin.y < end.y) ? 1 : -1;
 
-        if (error >= dx){
-            y = y + 1;
-            error = error - 2*dx;
+    // Inicializa a variável de erro para controle do algoritmo de Bresenham
+    int err = dx - dy;
+
+    // Loop infinito para traçar a linha pixel por pixel
+    while (true) {
+        // Coloca um pixel na posição atual
+        PutPixel(Spot{begin.x, begin.y}, b);
+
+        // Se o ponto atual é igual ao ponto final, termina o loop
+        if (begin.x == end.x && begin.y == end.y) break;
+
+        // Calcula o dobro do erro atual
+        int e2 = 2 * err;
+
+        // Ajusta o erro e a coordenada x se necessário
+        if (e2 > -dy) {
+            err -= dy;
+            begin.x += sx;
+        }
+
+        // Ajusta o erro e a coordenada y se necessário
+        if (e2 < dx) {
+            err += dx;
+            begin.y += sy;
         }
     }
+}
+
+void DrawTriangle(Spot a, Spot b, Spot c, Color ca, Color cb, Color cc) {
+    // Desenha uma linha entre os pontos a e b com as cores ca e cb
+    DrawLine(a, b, ca, cb);
+
+    // Desenha uma linha entre os pontos a e c com as cores ca e cc
+    DrawLine(a, c, ca, cc);
+
+    // Desenha uma linha entre os pontos b e c com as cores cb e cc
+    DrawLine(b, c, cb, cc);
 }
