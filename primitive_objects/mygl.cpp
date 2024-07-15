@@ -23,7 +23,6 @@ void MyGlDraw(void)
 }
 
 void PutPixel (Spot q, Color p) {
-    // Escreve um pixel vermelho na posicao (0,0) da tela
     int position = (4 * q.x)+ (4 * q.y * IMAGE_WIDTH);
 
     FBptr[position] = p.r; // componente R
