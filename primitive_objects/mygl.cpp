@@ -16,6 +16,8 @@ void MyGlDraw(void)
     Spot any_f = {256, 256};
     Color white = {255, 255, 255, 255};
     Color red = {255, 0, 0, 255};
+    Color green = {0, 255, 0, 255};
+    Color blue = {0, 0, 255, 255};
     PutPixel(any_s, white);
     //DrawLine(any_f, any_s, white, red);
     DrawTriangle( Spot{0, 0}, Spot{256, 256}, Spot{512, 0}, red, red, red);
@@ -31,7 +33,7 @@ void PutPixel (Spot q, Color p) {
     FBptr[position+3] = p.a; // componente A
 }
 
-void DrawLine(Spot begin, Spot end, Color b, Color e) {
+void DrawLine(Spot begin, Spot end, Color b) {
     // Calcula a diferença absoluta entre as coordenadas x dos pontos de início e fim
     int dx = abs(end.x - begin.x);
     // Calcula a diferença absoluta entre as coordenadas y dos pontos de início e fim
@@ -70,13 +72,13 @@ void DrawLine(Spot begin, Spot end, Color b, Color e) {
     }
 }
 
-void DrawTriangle(Spot a, Spot b, Spot c, Color ca, Color cb, Color cc) {
+void DrawTriangle(Spot a, Spot b, Spot c, Color ab, Color ac, Color bc) {
     // Desenha uma linha entre os pontos a e b com as cores ca e cb
-    DrawLine(a, b, ca, cb);
+    DrawLine(a, b, ab);
 
     // Desenha uma linha entre os pontos a e c com as cores ca e cc
-    DrawLine(a, c, ca, cc);
+    DrawLine(a, c, ac);
 
     // Desenha uma linha entre os pontos b e c com as cores cb e cc
-    DrawLine(b, c, cb, cc);
+    DrawLine(b, c, bc);
 }
