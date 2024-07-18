@@ -73,12 +73,12 @@ void DrawLine(Spot begin, Spot end, Color b) {
 }
 
 void DrawTriangle(Spot a, Spot b, Spot c, Color ab, Color ac, Color bc) {
-    // Desenha uma linha entre os pontos a e b com as cores ca e cb
+    // Desenha uma linha entre os pontos a e b com a cor ab
     DrawLine(a, b, ab);
 
-    // Desenha uma linha entre os pontos a e c com as cores ca e cc
+    // Desenha uma linha entre os pontos a e c com a cor ac
     DrawLine(a, c, ac);
 
-    // Desenha uma linha entre os pontos b e c com as cores cb e cc
+    // Desenha uma linha entre os pontos b e c com a cor bc
     DrawLine(b, c, bc);
 }
