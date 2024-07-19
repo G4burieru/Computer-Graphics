@@ -5,15 +5,15 @@
 #include "definitions.h"
 
 struct Spot{
-    int x;
-    int y;
+    short int x;
+    short int y;
 };
 
 struct Color{
-    int r;
-    int g;
-    int b;
-    int a;
+    unsigned char r;
+    unsigned char g;
+    unsigned char b;
+    unsigned char a;
 };
 
 
