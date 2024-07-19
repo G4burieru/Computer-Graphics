@@ -54,7 +54,7 @@ void DrawLine(Spot begin, Spot end, Color b) {
 
         // Se o ponto atual é igual ao ponto final, termina o loop
         if (begin.x == end.x && begin.y == end.y) break;
-
+        
         // Calcula o dobro do erro atual
         int e2 = 2 * err;
 
@@ -63,7 +63,6 @@ void DrawLine(Spot begin, Spot end, Color b) {
             err -= dy;
             begin.x += sx;
         }
-
         // Ajusta o erro e a coordenada y se necessário
         if (e2 < dx) {
             err += dx;
