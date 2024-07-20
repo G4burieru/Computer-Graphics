@@ -12,15 +12,15 @@ void MyGlDraw(void)
     //*************************************************************************
     // Chame aqui as funções do mygl.h
     //*************************************************************************
-    Spot any_s = {0, 0};
-    Spot any_f = {256, 256};
-    Color white = {255, 255, 255, 255};
-    Color red = {255, 0, 0, 255};
+    Spot first = {0, 0};
+    Spot middle = {256, 256};
+    Color white = {255, 255, 255, 0};
+    Color red = {255, 0, 0, 0};
     Color green = {0, 255, 0, 255};
     Color blue = {0, 0, 255, 255};
-    PutPixel(any_s, white);
-    //DrawLine(any_f, any_s, white, red);
-    DrawTriangle( Spot{0, 0}, Spot{256, 256}, Spot{512, 0}, red, red, red);
+    //PutPixel(middle, green);
+    //DrawLine(first, middle, white);
+    DrawTriangle( Spot{0, 0}, Spot{256, 256}, Spot{512, 0}, red, green, blue);
 
 }
 
