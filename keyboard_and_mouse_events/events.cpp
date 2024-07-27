@@ -5,8 +5,9 @@
 GLint LARGURA = 600,
       ALTURA = 600;
 
-float last_r, last_g, last_b;
-bool mousePressed = false;
+GLfloat last_r, last_g, last_b;
+GLint mode = 2;
+GLint xi, yi, actual_point = 0;
 
 void initGlut(int *argc, char **argv){
     glutInit(argc, argv);
@@ -38,6 +39,30 @@ void desenharPonto(GLint x, GLint y){
         glFlush();
 }
 
+void desenharLinha(GLint xi, GLint yi, GLint xf, GLint yf) {
+    glLineWidth(3.0); // Define a largura da linha
+
+    glBegin(GL_LINES);
+        glColor3f(last_r, last_g, last_b); // Define a cor da linha
+        glVertex2i(xi, yi); // Ponto inicial da linha
+        glVertex2i(xf, yf); // Ponto final da linha
+    glEnd();
+    glFlush(); // Garante que todos os comandos OpenGL sejam executados
+}
+
+void desenharRetangulo(GLint xi, GLint yi, GLint xf, GLint yf){
+    glLineWidth(3.0); // Define a largura da linha
+
+    glBegin(GL_LINE_LOOP);
+        glColor3f(last_r, last_g, last_b); // Define a cor da linha
+        glVertex2i(xi, yi); // Ponto inicial da linha
+        glVertex2i(xf, yi); // Ponto final da linha
+        glVertex2i(xf, yf); // Ponto final da linha
+        glVertex2i(xi, yf); // Ponto final da linha
+    glEnd();
+    glFlush(); // Garante que todos os comandos OpenGL sejam executados
+}
+
 void desenharTriangulo(GLvoid){
     glLineWidth(5.0);
     glBegin(GL_TRIANGLES);
@@ -59,23 +84,36 @@ void desenha(GLvoid){
 }
 
 void eventoMouse(GLint button, GLint action, GLint x, GLint y){
-    if(button == GLUT_LEFT_BUTTON && action == GLUT_DOWN){
-        mousePressed = true; 
-        desenharPonto(x, 480 - y);
+    if(mode == 0 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN){
+        desenharPonto(x, y);
+    } 
 
-    } else if(button == GLUT_LEFT_BUTTON && action == GLUT_UP){
-        mousePressed = false; 
-        printf("Botão esquerdo liberado na posição %dx%d\n", x, y);
-    } else if(button == GLUT_RIGHT_BUTTON && action == GLUT_DOWN){
-        printf("Botão direito pressionado na posição %dx%d\n", x, y);
-    } else if(button == GLUT_RIGHT_BUTTON && action == GLUT_UP){
-        printf("Botão direito liberado na posição %dx%d\n", x, y);
+    else if(mode == 1 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN && actual_point == 0){
+        xi = x;
+        yi = y;
+        actual_point = 1;
+    } 
+    else if(mode == 1 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN && actual_point == 1){
+        desenharLinha(xi, yi, x, y);
+        actual_point = 0;
     }
-}
+    else if(mode == 2 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN && actual_point == 0){
+        xi = x;
+        yi = y;
+        actual_point = 1;
+    } 
+    else if(mode == 2 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN && actual_point == 1){
+        desenharRetangulo(xi, yi, x, y);
+        actual_point = 0;
+    }
+
 
 }
-void eventoMouse3(GLint x, GLint y){
-    printf("clicando x=%d e y=%d\n", x, y);
+
+
+void eventoMouse2(GLint x, GLint y){
+    //desenha pontos na tela enquanto o mouse estiver com o botao esquerdo pressionado
+    if(mode == 0) desenharPonto(x, y);
 }
 
 void eventoTeclado(GLubyte key, GLint x, GLint y){
@@ -97,10 +135,6 @@ void eventoTeclado(GLubyte key, GLint x, GLint y){
     }
 }
 
-void eventoTecladoEsp(GLint key, GLint x, GLint y){
-    printf("Evento teclado especial disparado\n");
-}
-
 
 int main(int argc, char *argv[])
 {
@@ -111,10 +145,8 @@ int main(int argc, char *argv[])
     last_b = 0;
     glutDisplayFunc(desenha);
     glutMouseFunc(eventoMouse);
-    glutPassiveMotionFunc(eventoMouse2);
-    glutMotionFunc(eventoMouse3);
+    glutMotionFunc(eventoMouse2);
     glutKeyboardFunc(eventoTeclado);
-    glutSpecialFunc(eventoTecladoEsp);
     glutMainLoop();
     return 0;
 }
