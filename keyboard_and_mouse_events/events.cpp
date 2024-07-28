@@ -5,7 +5,7 @@
 
 GLint LARGURA = 600, ALTURA = 600;
 GLfloat last_r = 0.0f, last_g = 0.0f, last_b = 0.0f;
-GLint mode = 0, xi, yi, actual_point = 0;
+GLint mode = 0, xi, yi, current_point = 0;
 
 struct Objeto{ //struct para ajudar na identificação dos tipos de objetos
     int tipo; // 0 = ponto, 1 = linha, 2 = retângulo, 3 = circulo
@@ -105,31 +105,31 @@ void eventoMouse(GLint button, GLint action, GLint x, GLint y) {
     if (mode == 0 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN) {  //se mode=0 então está no modo "desenhar pontos" e se o botão esq foi pressionado
         objetos.push_back({0, x, y, x, y, last_r, last_g, last_b});  //guardamos um novo ponto nos objetos (que será em breve desenhado)
         glutPostRedisplay();
-    } else if (mode == 1 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN && actual_point == 0) { //se modo=1 então está no modo "desenhar linha" e se actual_point=0 significa é o ponto de inicio da linha
+    } else if (mode == 1 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN && current_point == 0) { //se modo=1 então está no modo "desenhar linha" e se current_point=0 significa é o ponto de inicio da linha
         xi = x;
         yi = y;
-        actual_point = 1;  //se o usuário já escolheu o ponto inicial, a variável recebe 1
-    } else if (mode == 1 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN && actual_point == 1) {  //modo de "desenhar linhas" e se actual_point=1 significa que o usuário está determinando o ponto final da linha
+        current_point = 1;  //se o usuário já escolheu o ponto inicial, a variável recebe 1
+    } else if (mode == 1 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN && current_point == 1) {  //modo de "desenhar linhas" e se current_point=1 significa que o usuário está determinando o ponto final da linha
         objetos.push_back({1, xi, yi, x, y, last_r, last_g, last_b});  //coloca a linha no vetor de objetos 
-        actual_point = 0;   //a variável é zerada pra o usuário poder desenhar uma nova linha
+        current_point = 0;   //a variável é zerada pra o usuário poder desenhar uma nova linha
         glutPostRedisplay();
-    } else if (mode == 2 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN && actual_point == 0) { //se modo=2 então está no modo "des. retangulos" e se actual_point=1 significa q o user está determinando o ponto que inicia o retangulo
+    } else if (mode == 2 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN && current_point == 0) { //se modo=2 então está no modo "des. retangulos" e se current_point=1 significa q o user está determinando o ponto que inicia o retangulo
         xi = x;
         yi = y;
-        actual_point = 1;
-    } else if (mode == 2 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN && actual_point == 1) { //"des. retangulo" e estamos determinando o ponto final do retangulo
+        current_point = 1;
+    } else if (mode == 2 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN && current_point == 1) { //"des. retangulo" e estamos determinando o ponto final do retangulo
         objetos.push_back({2, xi, yi, x, y, last_r, last_g, last_b}); //guardamos um retangulo na lista de objetos
-        actual_point = 0;
+        current_point = 0;
         glutPostRedisplay();
 
-    }else if(mode == 3 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN && actual_point == 0){ //estamos no modo de "des. circulos" e demarcamos onde o diametro do circ. começa
+    }else if(mode == 3 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN && current_point == 0){ //estamos no modo de "des. circulos" e demarcamos onde o diametro do circ. começa
         xi = x;
         yi = y;
-        actual_point = 1;
+        current_point = 1;
 
-    }else if(mode == 3 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN && actual_point == 1){ //estamos no modo de "des. circulos" e demarcamos onde o diametro do cir. termina 
+    }else if(mode == 3 && button == GLUT_LEFT_BUTTON && action == GLUT_DOWN && current_point == 1){ //estamos no modo de "des. circulos" e demarcamos onde o diametro do cir. termina 
         objetos.push_back({3, xi, yi, x, y, last_r, last_g, last_b});  //guardamos o circulo no vetor de objetos
-        actual_point = 0;
+        current_point = 0;
         glutPostRedisplay();
     }
 }
@@ -164,15 +164,15 @@ void menu(int option) {
             break;
         case 2:  //se a opção escolhida no menu foi 2, então determinamos mode=1 (desenhar linhas)
             mode = 1;
-            actual_point = 0;
+            current_point = 0;
             break;
         case 3:  //se a opção escolhida no menu foi 3, então determinamos mode=2 (retangulo)
             mode = 2;
-            actual_point = 0;
+            current_point = 0;
             break;
         case 4:
             mode = 3;
-            actual_point = 0;
+            current_point = 0;
             break;
         case 5:   //se a opcao escolhida no menu foi 5, então limpamos a tela
             objetos.clear();  //limpamos o vetor que possui todos os objetos que "estavam" na tela
