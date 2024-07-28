@@ -90,11 +90,9 @@ void desenha() {  //função que vai desenhar na tela todos os objetos que já f
                 break;
             case 3:
                 GLfloat raio; 
-                if(obj.yi > obj.yf){  //foi utilizado o critério de que o raio vai ser o modulo da diferenca entre yi e yf dividido por 2
-                    raio = (obj.yi - obj.yf)/2;
-                }else{
-                    raio = (obj.yf - obj.yi)/2;  
-                }
+            
+                raio = (obj.yf - obj.yi)/2;  
+            
                 desenhaCirculo(obj.xi, obj.yi, raio, obj.r, obj.g, obj.b);
         }
     }
