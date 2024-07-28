@@ -31,7 +31,7 @@ void inicializacao(GLvoid) {
     gluOrtho2D(0, LARGURA, ALTURA, 0);
 }
 
-void desenhaPonto(GLint x, GLint y, float r, float g, float b) {
+void desenhaPonto(GLint x, GLint y, float r, float g, float b) {   //funcao que desenha um ponto na tela 
     glPointSize(3.0);
     glColor3f(r, g, b);
     glBegin(GL_POINTS);
@@ -39,7 +39,7 @@ void desenhaPonto(GLint x, GLint y, float r, float g, float b) {
     glEnd();
 }
 
-void desenhaLinha(GLint xi, GLint yi, GLint xf, GLint yf, float r, float g, float b) {
+void desenhaLinha(GLint xi, GLint yi, GLint xf, GLint yf, float r, float g, float b) {  //funcao que desenha uma linha na tela
     glLineWidth(3.0);
     glColor3f(r, g, b);
     glBegin(GL_LINES);
@@ -48,7 +48,7 @@ void desenhaLinha(GLint xi, GLint yi, GLint xf, GLint yf, float r, float g, floa
     glEnd();
 }
 
-void desenhaRetangulo(GLint xi, GLint yi, GLint xf, GLint yf, float r, float g, float b) {
+void desenhaRetangulo(GLint xi, GLint yi, GLint xf, GLint yf, float r, float g, float b) {  //funcao que desenha um retangulo na tela 
     glLineWidth(3.0);
     glColor3f(r, g, b);
     glBegin(GL_LINE_LOOP);
@@ -59,7 +59,7 @@ void desenhaRetangulo(GLint xi, GLint yi, GLint xf, GLint yf, float r, float g, 
     glEnd();
 }
 
-void desenhaCirculo(GLint x, GLint y, GLfloat radius, float r, float g, float b) {
+void desenhaCirculo(GLint x, GLint y, GLfloat radius, float r, float g, float b) {  //funcao que desenha um circulo na tela
     int num_segments = 75; // número de segmentos para aproximar o círculo
     GLfloat angle;
 
@@ -89,11 +89,10 @@ void desenha() {  //função que vai desenhar na tela todos os objetos que já f
                 desenhaRetangulo(obj.xi, obj.yi, obj.xf, obj.yf, obj.r, obj.g, obj.b);
                 break;
             case 3:
-                GLfloat raio; 
+                GLfloat diametro; 
+                diametro = std::sqrt(std::pow(obj.xf - obj.xi, 2) + std::pow(obj.yf - obj.yi, 2));
             
-                raio = (obj.yf - obj.yi)/2;  
-            
-                desenhaCirculo(obj.xi, obj.yi, raio, obj.r, obj.g, obj.b);
+                desenhaCirculo(obj.xi, obj.yi, diametro, obj.r, obj.g, obj.b);
         }
     }
     glFlush();
